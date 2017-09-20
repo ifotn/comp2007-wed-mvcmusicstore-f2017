@@ -19,9 +19,9 @@ namespace MvcMusicStore_Wed_F2017.Controllers
                 genres.Add(new Genre { Name = "Genre " + i });
             }
 
-            ViewBag.genres = genres;
+            // ViewBag.genres = genres;
             ViewBag.Message = "Please select a Genre";
-            return View();
+            return View(genres);
         }
 
         // GET: Store/Browse

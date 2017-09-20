@@ -2,13 +2,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model IEnumerable<MvcMusicStore_Wed_F2017.Models.Genre>
+
 <h2>Welcome to the Music Store</h2>
 
 <h3>@ViewBag.Message</h3>
 
 <ul>
-    @foreach(var g in ViewBag.genres)
+    @foreach (var g in Model)
     {
-        <li>@g.Name</li>
+        <li>@Html.ActionLink(g.Name, "Browse", "Store", new { genre = g.Name }, null)</li>
     }
 </ul>
