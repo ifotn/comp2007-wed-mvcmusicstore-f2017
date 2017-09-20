@@ -7,7 +7,8 @@
 <h3>@ViewBag.Message</h3>
 
 <ul>
-    <li>@Html.ActionLink("Rock", "Browse", "Store", new { genre = "Rock" }, null)</li>
-    <li>@Html.ActionLink("Jazz", "Browse", "Store", new { genre = "Jazz" }, null)</li>
-    <li>@Html.ActionLink("Blues", "Browse", "Store", new { genre = "Blues" }, null)</li>
+    @foreach(var g in ViewBag.genres)
+    {
+        <li>@g.Name</li>
+    }
 </ul>
