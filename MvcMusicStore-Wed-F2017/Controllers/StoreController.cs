@@ -25,7 +25,9 @@ namespace MvcMusicStore_Wed_F2017.Controllers
             // ViewBag.genres = genres;
 
             // use the connection and Genre model to query the Genre table
-            var genres = db.Genres.ToList();
+            var genres = from g in db.Genres
+                         orderby g.Name ascending
+                         select g;
 
             ViewBag.Message = "Please select a Genre";
             return View(genres);
@@ -34,9 +36,13 @@ namespace MvcMusicStore_Wed_F2017.Controllers
         // GET: Store/Browse
         public ActionResult Browse(string genre) {
 
+            // use our Album model to display the related albums
+            var selectedGenre = db.Genres.Include("Albums")
+                .Single(g => g.Name == genre);
+
             // Send genre back to the View
             ViewBag.Genre = genre;
-            return View();
+            return View(selectedGenre);
         }
     }
 }
