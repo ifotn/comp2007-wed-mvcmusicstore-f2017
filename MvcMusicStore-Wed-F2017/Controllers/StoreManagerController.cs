@@ -10,6 +10,7 @@ using MvcMusicStore_Wed_F2017.Models;
 
 namespace MvcMusicStore_Wed_F2017.Controllers
 {
+   
     public class StoreManagerController : Controller
     {
         private MusicStoreModel db = new MusicStoreModel();
@@ -54,8 +55,12 @@ namespace MvcMusicStore_Wed_F2017.Controllers
         // GET: StoreManager/Create
         public ActionResult Create()
         {
-            ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name");
-            ViewBag.GenreId = new SelectList(db.Genres, "GenreId", "Name");
+            // sort by Artist and Genre
+            var artists = db.Artists.ToList().OrderBy(a => a.Name);
+            var genres = db.Genres.ToList().OrderBy(g => g.Name);
+
+            ViewBag.ArtistId = new SelectList(artists, "ArtistId", "Name");
+            ViewBag.GenreId = new SelectList(genres, "GenreId", "Name");
             return View();
         }
 
@@ -68,6 +73,21 @@ namespace MvcMusicStore_Wed_F2017.Controllers
         {
             if (ModelState.IsValid)
             {
+                // check for a new cover image upload
+                if (Request.Files.Count > 0)
+                {
+                    var file = Request.Files[0];
+
+                    if (file.FileName != null && file.ContentLength > 0)
+                    {
+                        string path = Server.MapPath("~/Content/Images/") + file.FileName;
+                        file.SaveAs(path);
+
+                        // add path to image name before saving
+                        album.AlbumArtUrl = "/Content/Images/" + file.FileName;
+                    }
+                }
+
                 db.Albums.Add(album);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -90,8 +110,13 @@ namespace MvcMusicStore_Wed_F2017.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name", album.ArtistId);
-            ViewBag.GenreId = new SelectList(db.Genres, "GenreId", "Name", album.GenreId);
+
+            // sort by Artist and Genre
+            var artists = db.Artists.ToList().OrderBy(a => a.Name);
+            var genres = db.Genres.ToList().OrderBy(g => g.Name);
+
+            ViewBag.ArtistId = new SelectList(artists, "ArtistId", "Name", album.ArtistId);
+            ViewBag.GenreId = new SelectList(genres, "GenreId", "Name", album.GenreId);
             return View(album);
         }
 
@@ -104,6 +129,21 @@ namespace MvcMusicStore_Wed_F2017.Controllers
         {
             if (ModelState.IsValid)
             {
+                // check for a new cover image upload
+                if (Request.Files.Count > 0)
+                {
+                    var file = Request.Files[0];
+
+                    if (file.FileName != null && file.ContentLength > 0)
+                    {
+                        string path = Server.MapPath("~/Content/Images/") + file.FileName;
+                        file.SaveAs(path);
+
+                        // add path to image name before saving
+                        album.AlbumArtUrl = "/Content/Images/" + file.FileName;
+                    }
+                }
+
                 db.Entry(album).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
