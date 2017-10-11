@@ -58,11 +58,11 @@ namespace MvcMusicStore_Wed_F2017
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "135706874900-c6og7jcja5cofs1pqijq3erdj5g9tu64.apps.googleusercontent.com",
+                ClientSecret = "OUD1qtjtjyZiYOggQoRVoCHT"
+            });
         }
     }
 }
