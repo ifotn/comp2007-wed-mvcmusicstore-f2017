@@ -7,6 +7,8 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using MvcMusicStore_Wed_F2017.Models;
 
+using System.Configuration;
+
 namespace MvcMusicStore_Wed_F2017
 {
     public partial class Startup
@@ -46,22 +48,22 @@ namespace MvcMusicStore_Wed_F2017
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
             // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            app.UseMicrosoftAccountAuthentication(
+                clientId: ConfigurationManager.AppSettings["MicrosoftClientID"],
+                clientSecret: ConfigurationManager.AppSettings["MicrosoftClientSecret"]);
 
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: ConfigurationManager.AppSettings["FacebookClientId"],
+               appSecret: ConfigurationManager.AppSettings["FacebookClientSecret"]);
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "135706874900-c6og7jcja5cofs1pqijq3erdj5g9tu64.apps.googleusercontent.com",
-                ClientSecret = "OUD1qtjtjyZiYOggQoRVoCHT"
+                ClientId = ConfigurationManager.AppSettings["GoogleClientId"],
+                ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"]
             });
         }
     }
