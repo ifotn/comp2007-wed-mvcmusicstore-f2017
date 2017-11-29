@@ -79,6 +79,12 @@ namespace MvcMusicStore_Wed_F2017.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+
+                    // if user can log in, attach any current cart items to their username
+                    var cart = ShoppingCart.GetCart(this.HttpContext);
+                    cart.MigrateCart(model.Email);
+                    Session["CartId"] = model.Email;
+
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
