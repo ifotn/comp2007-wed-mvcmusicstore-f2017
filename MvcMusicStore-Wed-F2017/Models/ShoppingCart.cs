@@ -129,5 +129,15 @@ namespace MvcMusicStore_Wed_F2017.Models
             db.SaveChanges();
 
         }
+
+        public void EmptyCart()
+        {
+            var cartItems = db.Carts.Where(c => c.CartId == ShoppingCartId);
+            foreach (var item in cartItems)
+            {
+                db.Carts.Remove(item);
+            }
+            db.SaveChanges();
+        }
     }
 }

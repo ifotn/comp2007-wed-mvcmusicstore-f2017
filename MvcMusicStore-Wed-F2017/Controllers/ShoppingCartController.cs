@@ -71,5 +71,76 @@ namespace MvcMusicStore_Wed_F2017.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        // POST: /AddressAndPayment
+        public ActionResult AddressAndPayment(FormCollection values)
+        {
+            // instantiate a new order
+            var order = new Order();
+            TryUpdateModel(order);
+
+            // check PromoCode equals "FREE"
+            if (string.Equals(values["PromoCode"], PromoCode, StringComparison.OrdinalIgnoreCase) == false) {
+                ViewBag.Message = "Invalid Promo Code - use FREE";
+                return View();
+            }
+
+            // populate the new order object
+            order.Username = User.Identity.Name;
+            order.Email = User.Identity.Name;
+            order.OrderDate = DateTime.Now;
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            order.Total = cart.GetCartTotal();
+
+            // save
+            db.Orders.Add(order);
+            db.SaveChanges();
+
+            // get new OrderId
+            int OrderId = order.OrderId;
+
+            // save Order Details from cart
+            var cartItems = cart.GetCartItems();
+
+            foreach (Cart item in cartItems)
+            {
+                var orderDetail = new OrderDetail();
+                orderDetail.OrderId = OrderId;
+                orderDetail.AlbumId = item.AlbumId;
+                orderDetail.Quantity = item.Count;
+                orderDetail.UnitPrice = item.Album.Price;
+
+                // save new order details
+                db.OrderDetails.Add(orderDetail);
+                db.SaveChanges();
+
+                //db.Carts.Attach(item);
+                //db.Entry(item).State = System.Data.Entity.EntityState.Deleted;
+                //db.SaveChanges();
+            }
+
+            // remove cart items
+            cart.EmptyCart();
+
+            // remove cart from session
+            Session["CartId"] = null;
+
+            // show confirmation page
+            return RedirectToAction("OrderSummary", new { Id = order.OrderId });
+        }
+
+        [Authorize]
+        // GET: /OrderSummary/5
+        public ActionResult OrderSummary(int Id)
+        {
+            // look up new order and pass to the view
+            var order = db.Orders.SingleOrDefault(o => o.OrderId == Id);
+
+            return View(order);
+        }
+
     }
 }
