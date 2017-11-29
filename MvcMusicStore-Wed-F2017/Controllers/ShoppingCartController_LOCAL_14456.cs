@@ -14,12 +14,9 @@ namespace MvcMusicStore_Wed_F2017.Controllers
         // db
         MusicStoreModel db = new MusicStoreModel();
 
-<<<<<<< HEAD
         // free promo code
         const string PromoCode = "FREE";
 
-=======
->>>>>>> b0670701c76886386c7848a527578b0074a56c76
         // GET: ShoppingCart
         public ActionResult Index()
         {
@@ -49,7 +46,6 @@ namespace MvcMusicStore_Wed_F2017.Controllers
             return RedirectToAction("Index");
 
         }
-<<<<<<< HEAD
 
         // GET: RemoveFromCart/5
         public ActionResult RemoveFromCart(int AlbumId)
@@ -146,7 +142,5 @@ namespace MvcMusicStore_Wed_F2017.Controllers
             return View(order);
         }
 
-=======
->>>>>>> b0670701c76886386c7848a527578b0074a56c76
     }
 }

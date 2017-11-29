@@ -17,7 +17,10 @@ else {
             <th>Album</th>
             <th>Price</th>
             <th>Quantity</th>
+<<<<<<< HEAD
             <th>Remove</th>
+=======
+>>>>>>> b0670701c76886386c7848a527578b0074a56c76
         </tr>
         @foreach (var item in Model.CartItems)
         {
@@ -25,14 +28,20 @@ else {
                 <td>@item.Album.Title</td>
                 <td>@String.Format("{0:c}", item.Album.Price)</td>
                 <td>@item.Count</td>
+<<<<<<< HEAD
                 <td>@Html.ActionLink("Remove", "RemoveFromCart", "ShoppingCart", new { AlbumId = item.AlbumId }, null)</td>
+=======
+>>>>>>> b0670701c76886386c7848a527578b0074a56c76
             </tr>
         }
         <tr>
             <td>Total</td>
             <td>@String.Format("{0:c}", Model.CartTotal)</td>
             <td></td>
+<<<<<<< HEAD
             <td>@Html.ActionLink("Checkout", "AddressAndPayment", "ShoppingCart", null, new { @class = "btn btn-default" })</td>
+=======
+>>>>>>> b0670701c76886386c7848a527578b0074a56c76
         </tr>
     </table>
 }
