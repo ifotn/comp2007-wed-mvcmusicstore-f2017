@@ -84,7 +84,7 @@ namespace MvcMusicStore_Wed_F2017.Models
             // commit changes
             db.SaveChanges();
         }
-<<<<<<< HEAD
+
 
         // GET: /ShoppingCart/RemoveFromCart/5
         public int RemoveFromCart(int AlbumId)
@@ -140,7 +140,6 @@ namespace MvcMusicStore_Wed_F2017.Models
             }
             db.SaveChanges();
         }
-=======
->>>>>>> b0670701c76886386c7848a527578b0074a56c76
+
     }
 }

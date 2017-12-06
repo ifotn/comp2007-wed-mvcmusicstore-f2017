@@ -209,8 +209,12 @@
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\EFStoreManagerRepository.cs" />
     <Compile Include="Models\Genre.cs" />
+    <Compile Include="Models\IArtistRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IGenreRepository.cs" />
+    <Compile Include="Models\IStoreManagerRepository.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MusicStoreModel.cs" />
     <Compile Include="Models\Order.cs" />
@@ -315,11 +319,8 @@
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\ShoppingCart\AddressAndPayment.cshtml" />
     <Content Include="Views\ShoppingCart\OrderSummary.cshtml" />
-=======
->>>>>>> b0670701c76886386c7848a527578b0074a56c76
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -14,15 +14,35 @@ namespace MvcMusicStore_Wed_F2017.Controllers
     [Authorize(Roles = "Administrator")]
     public class StoreManagerController : Controller
     {
-        private MusicStoreModel db = new MusicStoreModel();
+        // db connection moved to Models/EFStoreManagerRepository.cs
+        //private MusicStoreModel db = new MusicStoreModel();
+
+        // create 2 constructors for Dependency Injection: 1 mock, 1 using EF
+        // db can now be either the moc
+        private IStoreManagerRepository db;
+
+        public StoreManagerController()
+        {
+            // no param passed, so use EF Repository for db access
+            this.db = new EFStoreManagerRepository();
+        }
+
+        public StoreManagerController(IStoreManagerRepository smRepo)
+        {
+            this.db = smRepo;
+        }
 
         // GET: StoreManager
-        public ActionResult Index()
+        public ViewResult Index()
         {
+            // original code using db directly
             var albums = db.Albums.Include(a => a.Artist).Include(a => a.Genre);
 
+            // new code using our interfaces
+            //var albums = smRepo.Albums.Include(a => a.Artist).Include(a => a.Genre);
+
             ViewBag.AlbumCount = albums.Count();
-            return View(albums.ToList().OrderBy(a => a.Artist.Name).ThenBy(a => a.Title));
+            return View(albums.ToList());
         }
 
         // POST: StoreManager - Search Albums By Title
@@ -40,16 +60,16 @@ namespace MvcMusicStore_Wed_F2017.Controllers
 
         [AllowAnonymous]
         // GET: StoreManager/Details/5
-        public ActionResult Details(int? id)
+        public ViewResult Details(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View("Error");
             }
-            Album album = db.Albums.Find(id);
+            Album album = db.Albums.FirstOrDefault(a => a.AlbumId == id);
             if (album == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
             return View(album);
         }
@@ -90,8 +110,8 @@ namespace MvcMusicStore_Wed_F2017.Controllers
                     }
                 }
 
-                db.Albums.Add(album);
-                db.SaveChanges();
+                //db.Albums.Add(album);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -101,26 +121,26 @@ namespace MvcMusicStore_Wed_F2017.Controllers
         }
 
         // GET: StoreManager/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Album album = db.Albums.Find(id);
-            if (album == null)
-            {
-                return HttpNotFound();
-            }
+        //public ActionResult Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    //Album album = db.Albums.Find(id);
+        //    if (album == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            // sort by Artist and Genre
-            var artists = db.Artists.ToList().OrderBy(a => a.Name);
-            var genres = db.Genres.ToList().OrderBy(g => g.Name);
+        //    // sort by Artist and Genre
+        //    var artists = db.Artists.ToList().OrderBy(a => a.Name);
+        //    var genres = db.Genres.ToList().OrderBy(g => g.Name);
 
-            ViewBag.ArtistId = new SelectList(artists, "ArtistId", "Name", album.ArtistId);
-            ViewBag.GenreId = new SelectList(genres, "GenreId", "Name", album.GenreId);
-            return View(album);
-        }
+        //    ViewBag.ArtistId = new SelectList(artists, "ArtistId", "Name", album.ArtistId);
+        //    ViewBag.GenreId = new SelectList(genres, "GenreId", "Name", album.GenreId);
+        //    return View(album);
+        //}
 
         // POST: StoreManager/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -146,8 +166,8 @@ namespace MvcMusicStore_Wed_F2017.Controllers
                     }
                 }
 
-                db.Entry(album).State = EntityState.Modified;
-                db.SaveChanges();
+                //db.Entry(album).State = EntityState.Modified;
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name", album.ArtistId);
@@ -156,38 +176,38 @@ namespace MvcMusicStore_Wed_F2017.Controllers
         }
 
         // GET: StoreManager/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Album album = db.Albums.Find(id);
-            if (album == null)
-            {
-                return HttpNotFound();
-            }
-            return View(album);
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    //Album album = db.Albums.Find(id);
+        //    if (album == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(album);
+        //}
 
         // POST: StoreManager/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Album album = db.Albums.Find(id);
-            db.Albums.Remove(album);
-            db.SaveChanges();
+            //Album album = db.Albums.Find(id);
+            //db.Albums.Remove(album);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

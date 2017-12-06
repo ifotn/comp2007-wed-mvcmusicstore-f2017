@@ -26,5 +26,10 @@ namespace MvcMusicStore_Wed_F2017.Controllers
 
             return View();
         }
+
+        public int sum(int x, int y)
+        {
+            return x + y;
+        }
     }
 }
