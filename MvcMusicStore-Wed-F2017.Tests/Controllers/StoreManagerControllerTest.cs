@@ -33,9 +33,9 @@ namespace MvcMusicStore_Wed_F2017.Tests.Controllers
             // mock data
             albums = new List<Album>
             {
-                new Album { AlbumId = 1, Title = "Album 1", Price = 9 },
-                new Album { AlbumId = 2, Title = "Album 2", Price = 10 },
-                new Album { AlbumId = 3, Title = "Album 3", Price = 8 }
+                new Album { AlbumId = 1, Title = "Album 1", Price = 9, Artist = new Artist { ArtistId = 1, Name = "Artist 1" } },
+                new Album { AlbumId = 2, Title = "Album 2", Price = 10, Artist = new Artist { ArtistId = 2, Name = "Artist 2" } },
+                new Album { AlbumId = 3, Title = "Album 3", Price = 8, Artist = new Artist { ArtistId = 3, Name = "Artist 3" } }
             };
 
             // pass the mock data to the mock repo
@@ -50,7 +50,7 @@ namespace MvcMusicStore_Wed_F2017.Tests.Controllers
         {
             // act
             var actual = (List<Album>)controller.Index().Model;
-
+            
             // assert
             CollectionAssert.AreEqual(albums, actual);
 
@@ -59,8 +59,14 @@ namespace MvcMusicStore_Wed_F2017.Tests.Controllers
         [TestMethod]
         public void Details()
         {
+            // arrange
+            Random random = new Random();
+            int randomNumber = random.Next(1, 6);
+
+            Console.WriteLine(randomNumber);
+
             // act
-            var actual = (Album)controller.Details(1).Model;
+            var actual = (Album)controller.Details(randomNumber).Model;
 
             // assert
             Assert.AreEqual(albums.ToList()[0], actual);

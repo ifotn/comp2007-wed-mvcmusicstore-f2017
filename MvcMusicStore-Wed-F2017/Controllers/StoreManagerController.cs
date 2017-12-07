@@ -42,7 +42,9 @@ namespace MvcMusicStore_Wed_F2017.Controllers
             //var albums = smRepo.Albums.Include(a => a.Artist).Include(a => a.Genre);
 
             ViewBag.AlbumCount = albums.Count();
-            return View(albums.ToList());
+
+            return View(albums.OrderBy(a => a.Artist.Name).ThenBy(a => a.Title).ToList());
+            //return View(albums.ToList());
         }
 
         // POST: StoreManager - Search Albums By Title
