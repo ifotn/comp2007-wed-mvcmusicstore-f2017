@@ -55,6 +55,7 @@ namespace MvcMusicStore_Wed_F2017.Tests.Controllers
             CollectionAssert.AreEqual(albums, actual);
         }
 
+        // GET: Details
         [TestMethod]
         public void DetailsValidId()
         {
@@ -85,6 +86,7 @@ namespace MvcMusicStore_Wed_F2017.Tests.Controllers
             Assert.AreEqual("Error", actual.ViewName);
         }
 
+        // GET: Create
         [TestMethod]
         public void CreateViewLoads()
         {
@@ -95,6 +97,7 @@ namespace MvcMusicStore_Wed_F2017.Tests.Controllers
             Assert.AreEqual("Create", actual.ViewName);
         }
 
+        // POST: Create
         [TestMethod]
         public void CreateValid()
         {
@@ -111,6 +114,196 @@ namespace MvcMusicStore_Wed_F2017.Tests.Controllers
 
             // assert
             Assert.AreEqual("Index", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void CreateInvalidAlbum()
+        {
+            // act
+            ViewResult actual = controller.Create(null);
+
+            // assert
+            Assert.AreEqual("Create", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void CreateArtistsValid()
+        {
+            // act
+            ViewResult actual = controller.Create(null);
+
+            // assert
+            Assert.IsNotNull(actual.ViewBag.ArtistId);
+        }
+
+        [TestMethod]
+        public void CreateGenresValid()
+        {
+            // act
+            ViewResult actual = controller.Create(null);
+
+            // assert
+            Assert.IsNotNull(actual.ViewBag.GenreId);
+        }
+
+        // GET: Edit
+        [TestMethod]
+        public void EditValidId()
+        {
+            // act
+            var actual = (Album)controller.Edit(1).Model;
+
+            // assert
+            Assert.AreEqual(albums.ToList()[0], actual);
+        }
+
+        [TestMethod]
+        public void EditInvalidId()
+        {
+            // act
+            ViewResult actual = controller.Edit(4);
+
+            // assert
+            Assert.AreEqual("Error", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void EditInvalidNoId()
+        {
+            // arrange
+            int? AlbumId = null;
+
+            // act
+            ViewResult actual = controller.Edit(AlbumId);
+
+            // assert
+            Assert.AreEqual("Error", actual.ViewName);
+        }
+
+        // POST: Edit
+        [TestMethod]
+        public void EditValid()
+        {
+            // arrange
+            Album album = new Album
+            {
+                AlbumId = 1,
+                Title = "Album 1",
+                Price = 6
+            };
+
+            // act
+            ViewResult actual = controller.Edit(album);
+
+            // assert
+            Assert.AreEqual("Index", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void EditInvalidAlbum()
+        {
+            // arrange
+            Album album = null;
+
+            // act
+            ViewResult actual = controller.Edit(album);
+
+            // assert
+            Assert.AreEqual("Edit", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void EditArtistsValid()
+        {
+            // arrange
+            Album album = null;
+
+            // act
+            ViewResult actual = controller.Edit(album);
+
+            // assert
+            Assert.IsNotNull(actual.ViewBag.ArtistId);
+        }
+
+        [TestMethod]
+        public void EditGenresValid()
+        {
+            // arrange
+            Album album = null;
+
+            // act
+            ViewResult actual = controller.Edit(album);
+
+            // assert
+            Assert.IsNotNull(actual.ViewBag.GenreId);
+        }
+
+        // GET: Delete
+        [TestMethod]
+        public void DeleteValidId()
+        {
+            // act
+            var actual = (Album)controller.Delete(1).Model;
+
+            // assert
+            Assert.AreEqual(albums.ToList()[0], actual);
+        }
+
+        [TestMethod]
+        public void DeleteInvalidId()
+        {
+            // act
+            ViewResult actual = controller.Delete(4);
+
+            // assert
+            Assert.AreEqual("Error", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void DeleteInvalidNoId()
+        {
+            // arrange
+            int? id = null;
+
+            // act
+            ViewResult actual = controller.Delete(id);
+
+            // assert
+            Assert.AreEqual("Error", actual.ViewName);
+        }
+
+        // POST: DeleteConfirmed
+        [TestMethod]
+        public void DeleteConfirmedValidId()
+        {
+            // act
+            ViewResult actual = controller.DeleteConfirmed(1);
+
+            // assert
+            Assert.AreEqual("Index", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void DeleteConfirmedInvalidId()
+        {
+            // act
+            ViewResult actual = controller.DeleteConfirmed(4);
+
+            // assert
+            Assert.AreEqual("Error", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void DeleteConfirmedInvalidNoId()
+        {
+            // arrange
+            int? id = null;
+
+            // act
+            ViewResult actual = controller.DeleteConfirmed(id);
+
+            // assert
+            Assert.AreEqual("Error", actual.ViewName);
         }
     }
 

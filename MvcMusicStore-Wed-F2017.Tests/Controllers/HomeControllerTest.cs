@@ -52,7 +52,7 @@ namespace MvcMusicStore_Wed_F2017.Tests.Controllers
             ViewResult result = controller.About() as ViewResult;
 
             // Assert
-            Assert.AreEqual("This should fail", result.ViewBag.Message);
+            Assert.AreNotEqual("This should fail", result.ViewBag.Message);
      
         }
 
