@@ -44,7 +44,6 @@ namespace MvcMusicStore_Wed_F2017.Controllers
             ViewBag.AlbumCount = albums.Count();
 
             return View(albums.OrderBy(a => a.Artist.Name).ThenBy(a => a.Title).ToList());
-            //return View(albums.ToList());
         }
 
         // POST: StoreManager - Search Albums By Title
@@ -72,12 +71,13 @@ namespace MvcMusicStore_Wed_F2017.Controllers
             if (album == null)
             {
                 return View("Error");
+                //return HttpNotFound();
             }
             return View(album);
         }
 
         // GET: StoreManager/Create
-        public ActionResult Create()
+        public ViewResult Create()
         {
             // sort by Artist and Genre
             var artists = db.Artists.ToList().OrderBy(a => a.Name);
@@ -85,7 +85,7 @@ namespace MvcMusicStore_Wed_F2017.Controllers
 
             ViewBag.ArtistId = new SelectList(artists, "ArtistId", "Name");
             ViewBag.GenreId = new SelectList(genres, "GenreId", "Name");
-            return View();
+            return View("Create");
         }
 
         // POST: StoreManager/Create
@@ -93,28 +93,31 @@ namespace MvcMusicStore_Wed_F2017.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AlbumId,GenreId,ArtistId,Title,Price,AlbumArtUrl")] Album album)
+        public ViewResult Create([Bind(Include = "AlbumId,GenreId,ArtistId,Title,Price,AlbumArtUrl")] Album album)
         {
             if (ModelState.IsValid)
             {
-                // check for a new cover image upload
-                if (Request.Files.Count > 0)
-                {
-                    var file = Request.Files[0];
-
-                    if (file.FileName != null && file.ContentLength > 0)
+                if (Request != null) { 
+                    // check for a new cover image upload
+                    if (Request.Files.Count > 0)
                     {
-                        string path = Server.MapPath("~/Content/Images/") + file.FileName;
-                        file.SaveAs(path);
+                        var file = Request.Files[0];
 
-                        // add path to image name before saving
-                        album.AlbumArtUrl = "/Content/Images/" + file.FileName;
+                        if (file.FileName != null && file.ContentLength > 0)
+                        {
+                            string path = Server.MapPath("~/Content/Images/") + file.FileName;
+                            file.SaveAs(path);
+
+                            // add path to image name before saving
+                            album.AlbumArtUrl = "/Content/Images/" + file.FileName;
+                        }
                     }
                 }
 
                 //db.Albums.Add(album);
                 //db.SaveChanges();
-                return RedirectToAction("Index");
+                db.Save(album);
+                return View("Index"); // RedirectToAction("Index");
             }
 
             ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name", album.ArtistId);

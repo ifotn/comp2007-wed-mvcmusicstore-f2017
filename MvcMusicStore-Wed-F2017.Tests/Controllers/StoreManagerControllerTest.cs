@@ -53,23 +53,64 @@ namespace MvcMusicStore_Wed_F2017.Tests.Controllers
             
             // assert
             CollectionAssert.AreEqual(albums, actual);
-
         }
 
         [TestMethod]
-        public void Details()
+        public void DetailsValidId()
         {
-            // arrange
-            Random random = new Random();
-            int randomNumber = random.Next(1, 6);
-
-            Console.WriteLine(randomNumber);
-
             // act
-            var actual = (Album)controller.Details(randomNumber).Model;
+            var actual = (Album)controller.Details(1).Model;
 
             // assert
             Assert.AreEqual(albums.ToList()[0], actual);
+        }
+
+        [TestMethod]
+        public void DetailsInvalidId()
+        {
+            // act
+            ViewResult actual = controller.Details(4);
+
+            // assert
+            Assert.AreEqual("Error", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void DetailsInvalidNoId()
+        {
+            // act
+            ViewResult actual = controller.Details(null);
+
+            // assert
+            Assert.AreEqual("Error", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void CreateViewLoads()
+        {
+            // act
+            ViewResult actual = controller.Create();
+
+            // assert
+            Assert.AreEqual("Create", actual.ViewName);
+        }
+
+        [TestMethod]
+        public void CreateValid()
+        {
+            // arrange
+            Album album = new Album
+            {
+                AlbumId = 4,
+                Title = "Album 4",
+                Price = 44
+            };
+
+            // act
+            ViewResult actual = controller.Create(album);
+
+            // assert
+            Assert.AreEqual("Index", actual.ViewName);
         }
     }
 
